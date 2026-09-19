@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f8fb">
+<title>미국 배당 ETF 계산기 | AssetLab</title>
+<meta name="description" content="SCHD, JEPI, JEPQ 등 미국 배당 ETF의 예상 월 세후 현금흐름과 포트폴리오 배당을 간편하게 계산해보세요.">
+<style>
+:root{
+  --bg:#f6f8fb;
+  --surface:#ffffff;
+  --surface-2:#f8fafc;
+  --text:#171c26;
+  --sub:#697386;
+  --sub-2:#8b95a5;
+  --line:#e6ebf1;
+  --blue:#2f6fdb;
+  --blue-2:#245dbb;
+  --blue-soft:#edf4ff;
+  --blue-soft-2:#f5f9ff;
+  --danger:#e5484d;
+  --danger-soft:#fff1f1;
+  --warning:#9a6700;
+  --warning-soft:#fff8e6;
+  --success:#1f7a5a;
+  --shadow:0 14px 38px rgba(31,45,61,.06),0 2px 8px rgba(31,45,61,.025);
+  --radius:24px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{background:var(--bg);scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif;
+  letter-spacing:-.024em;-webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:3px solid rgba(47,111,219,.17);outline-offset:2px
+}
+.site-header{
+  max-width:1120px;margin:0 auto;padding:22px 22px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:16px
+}
+.brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:18px;letter-spacing:-.04em}
+.brand-mark{
+  width:28px;height:28px;border-radius:9px;
+  display:grid;place-items:center;background:linear-gradient(145deg,#3779e4,#245dbb);
+  color:#fff;font-size:14px;box-shadow:0 6px 16px rgba(47,111,219,.18)
+}
+.header-note{font-size:13px;color:var(--sub-2)}
+.hero{
+  max-width:1120px;margin:0 auto;padding:52px 22px 30px;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:28px;align-items:end
+}
+.eyebrow{color:var(--blue);font-weight:800;font-size:13px;margin-bottom:10px}
+.hero h1{margin:0;font-size:clamp(34px,5.4vw,54px);line-height:1.12;letter-spacing:-.055em;max-width:760px}
+.hero p{margin:18px 0 0;color:var(--sub);font-size:17px;line-height:1.72;max-width:690px}
+.data-stamp{
+  align-self:end;padding:10px 13px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.78);color:var(--sub);font-size:12px;white-space:nowrap
+}
+.shell{max-width:1120px;margin:0 auto;padding:0 22px 64px}
+.segment-wrap{
+  position:sticky;top:10px;z-index:20;margin-bottom:18px;
+  display:flex;justify-content:center;pointer-events:none
+}
+.segment{
+  pointer-events:auto;display:grid;grid-template-columns:1fr 1fr;
+  width:min(420px,100%);padding:5px;background:rgba(255,255,255,.9);
+  border:1px solid rgba(223,229,237,.95);border-radius:16px;
+  box-shadow:0 10px 28px rgba(31,45,61,.08);backdrop-filter:blur(16px)
+}
+.segment button{
+  border:0;background:transparent;color:var(--sub);padding:11px 16px;border-radius:12px;
+  font-weight:800;transition:background .24s var(--ease),color .24s var(--ease),transform .18s var(--ease)
+}
+.segment button[aria-selected="true"]{background:var(--text);color:#fff}
+.segment button:active{transform:scale(.985)}
+.mode-panel{animation:panelIn .34s var(--ease)}
+.mode-panel[hidden]{display:none!important}
+@keyframes panelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.two-col{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:18px;align-items:start}
+.stack{display:grid;gap:18px;margin-top:18px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:24px
+}
+.card h2{margin:0 0 6px;font-size:22px;letter-spacing:-.04em}
+.card h3{margin:0;font-size:17px;letter-spacing:-.035em}
+.card-desc{margin:0;color:var(--sub);font-size:14px;line-height:1.6}
+.section-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:22px}
+.auto-badge{
+  flex:none;padding:7px 10px;border-radius:999px;background:var(--blue-soft);color:var(--blue-2);
+  font-size:11px;font-weight:800
+}
+.field{margin-top:18px}
+.field:first-child{margin-top:0}
+label{display:block;margin-bottom:8px;color:#3d4654;font-size:13px;font-weight:750}
+.input-wrap{position:relative}
+input,select{
+  width:100%;min-height:54px;border:1px solid #dce3eb;border-radius:15px;background:#fff;color:var(--text);
+  padding:0 14px;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease
+}
+select{appearance:auto}
+input:hover,select:hover{border-color:#c9d4e1}
+input:focus,select:focus{border-color:#8db4ef;box-shadow:0 0 0 4px rgba(47,111,219,.09)}
+.money-input{font-size:18px;font-weight:780;letter-spacing:-.025em}
+.human-money{margin-top:8px;color:var(--blue-2);font-size:13px;font-weight:800;min-height:20px}
+.helper{margin-top:7px;color:var(--sub-2);font-size:12px;line-height:1.5}
+.quick-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.quick-chip{
+  border:1px solid var(--line);background:var(--surface-2);color:#536070;border-radius:999px;
+  padding:7px 10px;font-size:12px;font-weight:750;transition:.18s ease
+}
+.quick-chip:hover{border-color:#c8d8ee;background:var(--blue-soft-2);color:var(--blue-2)}
+.meta-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.meta-chip{
+  padding:7px 9px;border-radius:9px;background:var(--blue-soft);color:var(--blue-2);
+  font-size:11px;font-weight:800
+}
+details.advanced{
+  margin-top:20px;border-top:1px solid var(--line);padding-top:2px
+}
+details.advanced summary{
+  list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:15px 2px 11px;cursor:pointer;color:#3d4654;font-size:14px;font-weight:800
+}
+details.advanced summary::-webkit-details-marker{display:none}
+details.advanced summary:after{
+  content:"⌄";font-size:17px;color:var(--sub-2);transition:transform .22s var(--ease)
+}
+details.advanced[open] summary:after{transform:rotate(180deg)}
+.advanced-body{padding:3px 0 2px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.advanced-body .full{grid-column:1/-1}
+.scenario-box{
+  padding:14px;border-radius:16px;background:var(--blue-soft-2);border:1px solid #e4eefc
+}
+.result-card{
+  position:relative;overflow:hidden;padding:28px;
+  background:linear-gradient(145deg,#fff 0%,#fbfdff 45%,#f2f7ff 100%)
+}
+.result-card:after{
+  content:"";position:absolute;width:260px;height:260px;border-radius:50%;
+  right:-125px;top:-130px;background:radial-gradient(circle,rgba(47,111,219,.12),rgba(47,111,219,0) 70%);pointer-events:none
+}
+.result-top{position:relative;z-index:1}
+.result-label{color:var(--sub);font-size:14px;font-weight:750}
+.result-value{
+  margin-top:8px;font-size:clamp(38px,6vw,58px);line-height:1.05;font-weight:900;letter-spacing:-.06em;
+  font-variant-numeric:tabular-nums
+}
+.result-basis{margin-top:12px;color:var(--sub);font-size:13px;line-height:1.55}
+.result-actions{display:flex;gap:8px;margin-top:18px}
+.ghost-btn{
+  border:1px solid var(--line);background:rgba(255,255,255,.72);color:#475466;border-radius:12px;
+  padding:9px 12px;font-size:12px;font-weight:800;transition:.18s ease
+}
+.ghost-btn:hover{border-color:#c9d9ee;background:#fff;color:var(--blue-2)}
+.metrics{
+  position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;margin-top:24px
+}
+.metric{padding:15px;border:1px solid #e6ecf4;border-radius:16px;background:rgba(255,255,255,.74)}
+.metric small{display:block;color:var(--sub);font-size:11px;line-height:1.4}
+.metric b{display:block;margin-top:6px;font-size:18px;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.result-card.flash{animation:resultPulse .34s var(--ease)}
+@keyframes resultPulse{0%{transform:translateY(0)}45%{transform:translateY(-2px)}100%{transform:translateY(0)}}
+.goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:end}
+.goal-result{
+  min-height:84px;display:flex;flex-direction:column;justify-content:center;
+  padding:15px 17px;border-radius:17px;background:var(--blue-soft-2);border:1px solid #dfebfb
+}
+.goal-result small{color:var(--sub);font-size:11px}
+.goal-result strong{margin-top:6px;font-size:24px;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
+.goal-note{margin-top:12px;color:var(--sub-2);font-size:12px;line-height:1.55}
+.compare-list{display:grid;gap:8px;margin-top:18px}
+.compare-row{
+  display:grid;grid-template-columns:120px 86px 150px 1fr;gap:14px;align-items:center;
+  padding:13px 14px;border:1px solid var(--line);border-radius:15px;background:#fff
+}
+.compare-name b{font-size:14px}.compare-name span{display:block;color:var(--sub-2);font-size:10px;margin-top:2px}
+.compare-rate{color:var(--sub);font-size:12px}
+.compare-money{text-align:right;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+.bar-track{height:8px;background:#e9eff7;border-radius:999px;overflow:hidden}
+.bar-fill{
+  height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,#75a7ef,#2f6fdb);
+  transition:width .62s var(--ease)
+}
+.chart-card{padding-bottom:20px}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}
+.chart-kicker{color:var(--sub-2);font-size:11px;margin-top:4px}
+.chart-shell{
+  position:relative;min-height:265px;padding:4px 0 0;border-radius:18px;background:linear-gradient(180deg,#fbfdff,#fff);
+  border:1px solid #edf1f6;overflow:hidden;touch-action:pan-y
+}
+.chart-shell svg{display:block;width:100%;height:auto;min-height:260px}
+.chart-tooltip{
+  position:absolute;display:none;pointer-events:none;z-index:4;
+  padding:8px 10px;border-radius:10px;background:#172033;color:#fff;font-size:11px;font-weight:700;
+  box-shadow:0 8px 24px rgba(20,30,45,.18);white-space:nowrap;transform:translate(-50%,-115%)
+}
+.table-details{margin-top:14px}
+.table-details summary{cursor:pointer;color:var(--blue-2);font-size:13px;font-weight:800}
+.table-scroll{margin-top:12px;overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:660px;background:#fff}
+th,td{padding:12px 14px;border-bottom:1px solid #edf1f5;text-align:right;font-size:12px;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--sub);font-size:11px;background:#fafbfd}
+tr:last-child td{border-bottom:0}
+.portfolio-list{display:grid;gap:10px;margin-top:16px}
+.portfolio-row{
+  display:grid;grid-template-columns:minmax(150px,1.4fr) 90px 105px 38px;gap:8px;align-items:end;
+  padding:12px;border:1px solid var(--line);border-radius:16px;background:#fff;
+  transition:opacity .22s ease,transform .22s var(--ease),max-height .24s var(--ease),padding .24s var(--ease),margin .24s var(--ease)
+}
+.portfolio-row label{font-size:10px;margin-bottom:5px;color:var(--sub-2)}
+.portfolio-row input,.portfolio-row select{min-height:44px;border-radius:12px;padding:0 10px;font-size:13px}
+.icon-btn{
+  width:38px;height:44px;border:1px solid var(--line);background:#fff;color:var(--sub);border-radius:12px;
+  display:grid;place-items:center;font-size:18px;transition:.18s ease
+}
+.icon-btn:hover{background:var(--danger-soft);border-color:#ffd3d3;color:var(--danger)}
+.portfolio-row.removing{opacity:0;transform:translateY(-4px);max-height:0;padding-top:0;padding-bottom:0;overflow:hidden}
+.add-btn{
+  width:100%;margin-top:10px;min-height:46px;border:1px dashed #c8d6e8;background:var(--blue-soft-2);
+  color:var(--blue-2);border-radius:14px;font-weight:800
+}
+.allocation-wrap{margin-top:16px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--surface-2)}
+.allocation-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.weight-status{font-size:12px;font-weight:850}
+.weight-status.ok{color:var(--success)}.weight-status.bad{color:var(--danger)}
+.allocation-bar{display:flex;height:13px;margin-top:11px;border-radius:999px;background:#e8edf4;overflow:hidden}
+.allocation-seg{width:0;transition:width .58s var(--ease);min-width:0}
+.allocation-legend{display:flex;flex-wrap:wrap;gap:7px 12px;margin-top:10px}
+.legend-item{display:flex;align-items:center;gap:6px;color:var(--sub);font-size:11px}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+.breakdown-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.breakdown-item{padding:14px;border:1px solid var(--line);border-radius:15px}
+.breakdown-item span{display:block;color:var(--sub);font-size:11px}
+.breakdown-item b{display:block;margin-top:5px;font-size:16px}
+.sim-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mini-select{width:auto;min-width:110px;min-height:42px;border-radius:12px}
+.switch{
+  display:inline-flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:#fff;
+  color:#475466;font-size:12px;font-weight:750
+}
+.switch input{width:18px;height:18px;min-height:0;accent-color:var(--blue)}
+.notice{
+  padding:16px 17px;border-radius:17px;background:var(--warning-soft);border:1px solid #f2dfac;
+  color:#775514;font-size:12px;line-height:1.65
+}
+.method details{
+  border-top:1px solid var(--line);padding:13px 0
+}
+.method details:first-child{border-top:0}
+.method summary{cursor:pointer;font-size:13px;font-weight:800;color:#3f4a59}
+.method p{margin:10px 0 0;color:var(--sub);font-size:12px;line-height:1.68}
+.footer{
+  max-width:1120px;margin:0 auto;padding:26px 22px 46px;border-top:1px solid var(--line);
+  color:var(--sub);font-size:12px;line-height:1.7
+}
+.footer strong{color:var(--text);font-size:14px}
+.toast{
+  position:fixed;left:50%;bottom:24px;z-index:100;transform:translate(-50%,16px);
+  padding:11px 14px;border-radius:12px;background:#172033;color:#fff;font-size:12px;font-weight:750;
+  opacity:0;pointer-events:none;transition:opacity .2s ease,transform .25s var(--ease);box-shadow:0 10px 28px rgba(20,30,45,.2)
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:880px){
+  .hero{grid-template-columns:1fr;padding-top:38px}
+  .data-stamp{justify-self:start}
+  .two-col{grid-template-columns:1fr}
+  .compare-row{grid-template-columns:105px 72px 135px 1fr}
+}
+@media(max-width:640px){
+  .site-header{padding:18px 16px 0}.header-note{display:none}
+  .hero{padding:34px 16px 22px}.hero h1{font-size:36px}.hero p{font-size:15px;margin-top:14px}
+  .shell{padding:0 12px 46px}.segment-wrap{top:8px;margin-bottom:12px}
+  .segment{width:100%}
+  .card{padding:19px;border-radius:20px;box-shadow:0 8px 24px rgba(31,45,61,.045)}
+  .result-card{padding:22px 19px}.result-value{font-size:42px}
+  .metrics{grid-template-columns:1fr 1fr}.metric{padding:13px}.metric b{font-size:16px}
+  .goal-grid{grid-template-columns:1fr}
+  .advanced-body{grid-template-columns:1fr}.advanced-body .full{grid-column:auto}
+  .compare-row{grid-template-columns:1fr auto;gap:7px 12px;padding:12px}
+  .compare-rate{display:none}.compare-money{text-align:right}
+  .compare-row .bar-track{grid-column:1/-1}
+  .portfolio-row{grid-template-columns:1fr 76px 38px}
+  .portfolio-row .rate-col{grid-column:1/3}
+  .breakdown-grid{grid-template-columns:1fr 1fr}
+  .chart-shell{min-height:230px}.chart-shell svg{min-height:225px}
+  .footer{padding:22px 16px 38px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand"><span class="brand-mark">A</span><span>AssetLab</span></div>
+  <div class="header-note">투자와 은퇴를 숫자로 쉽게</div>
+</header>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">미국 배당 ETF 계산기</div>
+    <h1>투자금이 월 현금흐름으로<br>얼마가 되는지 바로 확인하세요.</h1>
+    <p>SCHD·JEPI·JEPQ 등 미국 배당 ETF의 세후 현금흐름을 계산하고, 포트폴리오 조합과 장기 시나리오까지 한 번에 살펴볼 수 있어요.</p>
+  </div>
+  <div class="data-stamp">입력값 점검 2026.09.19 · 실시간 연동 아님</div>
+</section>
+
+<main class="shell">
+  <div class="segment-wrap">
+    <div class="segment" role="tablist" aria-label="계산 방식">
+      <button id="singleTab" role="tab" aria-selected="true" aria-controls="singlePanel">ETF 하나</button>
+      <button id="portfolioTab" role="tab" aria-selected="false" aria-controls="portfolioPanel">포트폴리오</button>
+    </div>
+  </div>
+
+  <section id="singlePanel" class="mode-panel" role="tabpanel" aria-labelledby="singleTab">
+    <div class="two-col">
+      <section class="card">
+        <div class="section-head">
+          <div><h2>투자 설정</h2><p class="card-desc">ETF와 투자금만 바꿔도 결과가 바로 계산돼요.</p></div>
+          <span class="auto-badge">자동 계산</span>
+        </div>
+
+        <div class="field">
+          <label for="singleEtf">ETF</label>
+          <select id="singleEtf"></select>
+          <div id="singleEtfMeta" class="meta-row"></div>
+        </div>
+
+        <div class="field">
+          <label for="singlePrincipal">투자금</label>
+          <input id="singlePrincipal" class="money-input money-format" inputmode="numeric" value="500,000,000" aria-describedby="singlePrincipalHuman">
+          <div id="singlePrincipalHuman" class="human-money">5억원</div>
+          <div class="quick-row" aria-label="투자금 빠른 선택">
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="10000000">1천만</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="30000000">3천만</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="50000000">5천만</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="100000000">1억</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="300000000">3억</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="500000000">5억</button>
+            <button class="quick-chip" data-money-target="singlePrincipal" data-value="1000000000">10억</button>
+          </div>
+        </div>
+
+        <details class="advanced" id="singleAdvanced">
+          <summary><span>상세 조건 설정 <small style="color:var(--sub-2);font-weight:650">분배율 · 세금 · 성장 가정</small></span></summary>
+          <div class="advanced-body">
+            <div class="field">
+              <label for="singleYield">현재 분배율 (%)</label>
+              <input id="singleYield" type="number" step=".01" value="3.13">
+              <div class="helper">ETF 선택 시 참고값을 자동 입력하며 직접 수정할 수 있어요.</div>
+            </div>
+            <div class="field">
+              <label for="singleTax">예상 원천징수율 (%)</label>
+              <input id="singleTax" type="number" step=".1" value="15">
+              <div class="helper">기본값 15%. 실제 세금은 계좌·투자자 상황에 따라 달라질 수 있어요.</div>
+            </div>
+            <div class="field">
+              <label for="singleYears">시뮬레이션 기간</label>
+              <select id="singleYears">
+                <option value="10" selected>10년</option>
+                <option value="20">20년</option>
+                <option value="30">30년</option>
+              </select>
+            </div>
+            <div class="field scenario-box" id="growthScenarioBox">
+              <label for="growthMode">배당성장 가정</label>
+              <select id="growthMode">
+                <option value="long">장기 CAGR 자동 적용</option>
+                <option value="recent">최근 5년 CAGR</option>
+                <option value="conservative">보수적 가정</option>
+                <option value="custom">직접 설정</option>
+              </select>
+              <div id="growthInfo" class="helper"></div>
+              <div id="customGrowthWrap" style="display:none;margin-top:9px">
+                <input id="customGrowth" type="number" step=".1" value="5" aria-label="직접 성장률">
+              </div>
+            </div>
+            <div class="field scenario-box" id="incomeScenarioBox" style="display:none">
+              <label for="incomeScenario">향후 분배금 시나리오</label>
+              <select id="incomeScenario">
+                <option value="-10">보수적 · 연 -10%</option>
+                <option value="0" selected>기준 · 현재 수준 유지</option>
+                <option value="3">증가 · 연 +3%</option>
+              </select>
+              <div class="helper">옵션 인컴 ETF는 분배금이 일정하게 성장한다고 보기 어려워 시나리오로 계산해요.</div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="card result-card" id="singleResultCard" aria-live="polite">
+        <div class="result-top">
+          <div class="result-label">예상 월평균 세후 현금흐름</div>
+          <div class="result-value" id="singleMonthly">-</div>
+          <div class="result-basis" id="singleBasis"></div>
+          <div class="result-actions">
+            <button class="ghost-btn" id="singleShareBtn">결과 공유</button>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><small>연간 세후</small><b id="singleAnnualNet">-</b></div>
+          <div class="metric"><small>연간 세전</small><b id="singleAnnualGross">-</b></div>
+          <div class="metric"><small>세후 현금수익률</small><b id="singleNetYield">-</b></div>
+          <div class="metric"><small>분기평균 세후</small><b id="singleQuarter">-</b></div>
+          <div class="metric" style="grid-column:1/-1"><small>10년 단순 누적 세후 분배금*</small><b id="singleCum10">-</b></div>
+        </div>
+        <div class="helper" style="margin-top:13px">* 성장 가정을 적용하되 배당 재투자와 주가 변동은 제외한 단순 합계예요.</div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="card">
+        <div class="section-head">
+          <div><h2>월 생활비를 배당으로 충당하려면?</h2><p class="card-desc">원하는 월 현금흐름을 만들기 위한 투자금을 역산해요.</p></div>
+        </div>
+        <div class="goal-grid">
+          <div>
+            <label for="singleGoal">목표 월 세후 현금흐름</label>
+            <input id="singleGoal" class="money-input money-format" inputmode="numeric" value="3,000,000">
+            <div id="singleGoalHuman" class="human-money">300만원</div>
+            <div class="quick-row">
+              <button class="quick-chip" data-money-target="singleGoal" data-value="2000000">200만</button>
+              <button class="quick-chip" data-money-target="singleGoal" data-value="3000000">300만</button>
+              <button class="quick-chip" data-money-target="singleGoal" data-value="5000000">500만</button>
+            </div>
+          </div>
+          <div class="goal-result">
+            <small>현재 조건 기준 필요 투자금</small>
+            <strong id="singleNeeded">-</strong>
+          </div>
+        </div>
+        <div id="singleGoalNote" class="goal-note"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div><h2>같은 투자금으로 ETF 비교</h2><p class="card-desc">현금흐름만 비교한 값이에요. 분배율이 높다고 총수익률이 높은 것은 아니에요.</p></div>
+        </div>
+        <div id="compareList" class="compare-list"></div>
+      </section>
+
+      <section class="card chart-card">
+        <div class="chart-head">
+          <div><h2>배당 성장 시뮬레이션</h2><div class="chart-kicker">월평균 세후 현금흐름의 변화</div></div>
+          <div id="singleChartEnd" class="meta-chip">10년</div>
+        </div>
+        <div id="singleGrowthChart" class="chart-shell" aria-label="배당 성장 시뮬레이션 차트"></div>
+        <details class="table-details">
+          <summary>연도별 표 보기</summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>연도</th><th>세전 연분배금</th><th>세후 연분배금</th><th>월평균 세후</th><th>누적 세후</th></tr></thead>
+              <tbody id="singleGrowthRows"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </div>
+  </section>
+
+  <section id="portfolioPanel" class="mode-panel" role="tabpanel" aria-labelledby="portfolioTab" hidden>
+    <div class="two-col">
+      <section class="card">
+        <div class="section-head">
+          <div><h2>포트폴리오 설정</h2><p class="card-desc">총 투자금과 ETF 비중을 조합해보세요.</p></div>
+          <span class="auto-badge">자동 계산</span>
+        </div>
+
+        <div class="field">
+          <label for="portfolioPrincipal">총 투자금</label>
+          <input id="portfolioPrincipal" class="money-input money-format" inputmode="numeric" value="500,000,000">
+          <div id="portfolioPrincipalHuman" class="human-money">5억원</div>
+          <div class="quick-row">
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="10000000">1천만</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="30000000">3천만</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="50000000">5천만</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="100000000">1억</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="300000000">3억</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="500000000">5억</button>
+            <button class="quick-chip" data-money-target="portfolioPrincipal" data-value="1000000000">10억</button>
+          </div>
+        </div>
+
+        <div id="portfolioRows" class="portfolio-list"></div>
+        <button id="addPortfolioRow" class="add-btn" type="button">+ ETF 추가</button>
+        <div class="helper">ETF 선택 시 참고 분배율이 자동 입력되며 직접 수정할 수 있어요.</div>
+
+        <div class="allocation-wrap">
+          <div class="allocation-head">
+            <strong style="font-size:13px">포트폴리오 비중</strong>
+            <span id="weightStatus" class="weight-status ok">100%</span>
+          </div>
+          <div id="allocationBar" class="allocation-bar"></div>
+          <div id="allocationLegend" class="allocation-legend"></div>
+          <div id="weightHint" class="helper"></div>
+        </div>
+
+        <details class="advanced">
+          <summary><span>상세 조건 설정 <small style="color:var(--sub-2);font-weight:650">세금</small></span></summary>
+          <div class="advanced-body">
+            <div class="field full">
+              <label for="portfolioTax">예상 원천징수율 (%)</label>
+              <input id="portfolioTax" type="number" step=".1" value="15">
+              <div class="helper">기본값 15%. 실제 세금은 계좌·투자자 상황에 따라 달라질 수 있어요.</div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="card result-card" id="portfolioResultCard" aria-live="polite">
+        <div class="result-top">
+          <div class="result-label">포트폴리오 예상 월평균 세후 현금흐름</div>
+          <div class="result-value" id="portfolioMonthly">-</div>
+          <div class="result-basis" id="portfolioBasis"></div>
+          <div class="result-actions">
+            <button class="ghost-btn" id="portfolioShareBtn">결과 공유</button>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="metric"><small>연간 세후</small><b id="portfolioAnnual">-</b></div>
+          <div class="metric"><small>가중평균 세전 분배율</small><b id="portfolioYield">-</b></div>
+          <div class="metric"><small>세후 현금수익률</small><b id="portfolioNetYield">-</b></div>
+          <div class="metric"><small>10년 단순 누적 세후 분배금*</small><b id="portfolioCum10">-</b></div>
+        </div>
+        <div class="helper" style="margin-top:13px">* 각 ETF의 기본 성장 가정을 적용하며 재투자와 주가 변동은 제외해요.</div>
+      </section>
+    </div>
+
+    <div class="stack">
+      <section class="card">
+        <div class="section-head">
+          <div><h2>ETF별 현금흐름</h2><p class="card-desc">현재 입력한 비중을 100% 기준으로 환산해 보여줘요.</p></div>
+        </div>
+        <div id="portfolioBreakdownCards" class="breakdown-grid"></div>
+        <details class="table-details">
+          <summary>상세 표 보기</summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>ETF</th><th>비중</th><th>배정 투자금</th><th>연 세후</th><th>월평균</th></tr></thead>
+              <tbody id="portfolioBreakdownRows"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <section class="card chart-card">
+        <div class="chart-head">
+          <div>
+            <h2>포트폴리오 장기 시뮬레이션</h2>
+            <div class="chart-kicker">예상 연간 세후 현금흐름의 변화</div>
+          </div>
+          <div class="sim-controls">
+            <select id="portfolioYears" class="mini-select" aria-label="시뮬레이션 기간">
+              <option value="10">10년</option>
+              <option value="20" selected>20년</option>
+              <option value="30">30년</option>
+            </select>
+            <label class="switch"><input id="portfolioReinvest" type="checkbox" checked>세후 분배금 재투자</label>
+          </div>
+        </div>
+        <div id="portfolioGrowthChart" class="chart-shell" aria-label="포트폴리오 장기 시뮬레이션 차트"></div>
+        <div class="breakdown-grid" style="margin-top:14px">
+          <div class="breakdown-item"><span>기간 말 연 세후 현금흐름</span><b id="futureAnnual">-</b></div>
+          <div class="breakdown-item"><span>기간 말 월평균</span><b id="futureMonthly">-</b></div>
+          <div class="breakdown-item"><span>기간 말 시뮬레이션 자산*</span><b id="futureAsset">-</b></div>
+          <div class="breakdown-item"><span>누적 세후 분배금</span><b id="futureCum">-</b></div>
+        </div>
+        <div class="helper" style="margin-top:12px">* 주가 상승률은 별도로 가정하지 않고, 재투자한 세후 분배금만 원금에 더한 단순 시뮬레이션이에요.</div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <div><h2>월 생활비를 포트폴리오 배당으로 충당하려면?</h2><p class="card-desc">현재 구성의 가중평균 분배율로 필요한 투자금을 역산해요.</p></div>
+        </div>
+        <div class="goal-grid">
+          <div>
+            <label for="portfolioGoal">목표 월 세후 현금흐름</label>
+            <input id="portfolioGoal" class="money-input money-format" inputmode="numeric" value="3,000,000">
+            <div id="portfolioGoalHuman" class="human-money">300만원</div>
+            <div class="quick-row">
+              <button class="quick-chip" data-money-target="portfolioGoal" data-value="2000000">200만</button>
+              <button class="quick-chip" data-money-target="portfolioGoal" data-value="3000000">300만</button>
+              <button class="quick-chip" data-money-target="portfolioGoal" data-value="5000000">500만</button>
+            </div>
+          </div>
+          <div class="goal-result">
+            <small>현재 포트폴리오 기준 필요 투자금</small>
+            <strong id="portfolioNeeded">-</strong>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <div class="stack">
+    <section class="card method">
+      <div class="section-head" style="margin-bottom:4px">
+        <div><h2>계산 기준과 데이터 안내</h2><p class="card-desc">숫자를 어떻게 계산했는지 필요한 만큼만 펼쳐볼 수 있어요.</p></div>
+      </div>
+      <details>
+        <summary>분배율 참고값은 어떻게 쓰나요?</summary>
+        <p>ETF별 분배율은 운용사 공개 자료를 바탕으로 수동 입력한 참고값이며 실시간 데이터가 아닙니다. 상품마다 산출 기준이 다를 수 있고 실제 분배금은 변동될 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>배당성장률은 어떻게 가정하나요?</summary>
+        <p>SCHD는 장기 분배금 CAGR 7.6%, 최근 5년 9.1%를 참고값으로 사용합니다. DGRO는 장기 9.2%, 최근 5년 7.1%를 사용합니다. 과거 성장률은 미래를 보장하지 않으며 상세 설정에서 보수적 또는 직접 입력으로 바꿀 수 있습니다.</p>
+      </details>
+      <details>
+        <summary>JEPI·JEPQ·DIVO·QYLD는 왜 다르게 계산하나요?</summary>
+        <p>옵션 인컴 ETF의 분배금은 일반적인 기업 배당과 성격이 다르고 옵션 프리미엄이나 자본환급 등이 포함될 수 있어요. 그래서 단순한 '배당 성장률' 대신 향후 분배금 시나리오를 사용합니다.</p>
+      </details>
+    </section>
+
+    <section class="notice">
+      <strong>참고용 계산기예요.</strong><br>
+      이 결과는 입력값과 단순 가정을 바탕으로 한 추정치이며 투자 권유가 아닙니다. 분배금·가격·세금은 실제로 달라질 수 있으니 투자 판단 전에는 각 ETF의 최신 운용사 자료와 본인의 세금·계좌 조건을 확인해주세요.
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <strong>AssetLab</strong><br>
+  투자와 은퇴를 숫자로 쉽게 계산합니다.<br><br>
+  © 2026 AssetLab
+</footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+const ETF = {
+  SCHD:{rate:3.13,freq:"분기",kind:"growth",kindLabel:"배당성장",desc:"미국 배당성장",growthLong:7.6,growthRecent:9.1},
+  JEPI:{rate:8.43,freq:"월",kind:"income",kindLabel:"인컴",desc:"S&P 500 기반 인컴",growthLong:0,growthRecent:0},
+  JEPQ:{rate:11.11,freq:"월",kind:"income",kindLabel:"인컴",desc:"나스닥 기반 인컴",growthLong:0,growthRecent:0},
+  DIVO:{rate:4.84,freq:"월",kind:"income",kindLabel:"배당+옵션",desc:"배당주 + 옵션 전략",growthLong:0,growthRecent:0},
+  QYLD:{rate:12.06,freq:"월",kind:"income",kindLabel:"커버드콜",desc:"나스닥100 커버드콜",growthLong:0,growthRecent:0},
+  SPYD:{rate:4.30,freq:"분기",kind:"income",kindLabel:"고배당",desc:"S&P 500 고배당",growthLong:0,growthRecent:0},
+  DGRO:{rate:1.94,freq:"분기",kind:"growth",kindLabel:"배당성장",desc:"미국 배당성장",growthLong:9.2,growthRecent:7.1}
+};
+const ETF_NAMES = Object.keys(ETF);
+const BLUE_SHADES = ["#2f6fdb","#4b83de","#6a98e4","#8aafe9","#a7c3ef","#bed3f3","#d3e2f8"];
+const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const $ = id => document.getElementById(id);
+const els = {};
+[
+"singleTab","portfolioTab","singlePanel","portfolioPanel","singleEtf","singleEtfMeta",
+"singlePrincipal","singlePrincipalHuman","singleYield","singleTax","singleYears","growthScenarioBox",
+"incomeScenarioBox","growthMode","growthInfo","customGrowthWrap","customGrowth","incomeScenario",
+"singleResultCard","singleMonthly","singleBasis","singleAnnualNet","singleAnnualGross","singleNetYield",
+"singleQuarter","singleCum10","singleGoal","singleGoalHuman","singleNeeded","singleGoalNote","compareList",
+"singleChartEnd","singleGrowthChart","singleGrowthRows","singleShareBtn",
+"portfolioPrincipal","portfolioPrincipalHuman","portfolioRows","addPortfolioRow","weightStatus","allocationBar",
+"allocationLegend","weightHint","portfolioTax","portfolioResultCard","portfolioMonthly","portfolioBasis",
+"portfolioAnnual","portfolioYield","portfolioNetYield","portfolioCum10","portfolioBreakdownCards",
+"portfolioBreakdownRows","portfolioYears","portfolioReinvest","portfolioGrowthChart","futureAnnual",
+"futureMonthly","futureAsset","futureCum","portfolioGoal","portfolioGoalHuman","portfolioNeeded","portfolioShareBtn",
+"toast"
+].forEach(id=>els[id]=$(id));
+
+function num(v){ return Number(String(v == null ? "" : v).replace(/,/g,"").replace(/[^\d.-]/g,"")) || 0; }
+function comma(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,","); }
+function won(n){ return comma(n)+"원"; }
+function pct(n,d=2){ return Number(n).toFixed(d)+"%"; }
+
+function humanMoney(n){
+  n=Math.max(0,Math.round(n));
+  if(n>=100000000){
+    const eok=Math.floor(n/100000000);
+    const man=Math.floor((n%100000000)/10000);
+    return man ? eok+"억 "+comma(man)+"만원" : eok+"억원";
+  }
+  if(n>=10000) return comma(Math.floor(n/10000))+"만원";
+  return comma(n)+"원";
+}
+
+function formatMoneyInput(el){
+  const raw=String(el.value).replace(/[^\d]/g,"");
+  el.value=raw ? comma(Number(raw)) : "";
+  updateHumanFor(el);
+}
+function updateHumanFor(el){
+  const map={
+    singlePrincipal:"singlePrincipalHuman",
+    singleGoal:"singleGoalHuman",
+    portfolioPrincipal:"portfolioPrincipalHuman",
+    portfolioGoal:"portfolioGoalHuman"
+  };
+  const out=map[el.id] && $(map[el.id]);
+  if(out) out.textContent=humanMoney(num(el.value));
+}
+
+const animations = new WeakMap();
+function animateNumber(el,target,formatter){
+  target=Number(target)||0;
+  const prev=Number(el.dataset.numeric);
+  const start=Number.isFinite(prev) ? prev : target;
+  el.dataset.numeric=String(target);
+  const token=(animations.get(el)||0)+1;
+  animations.set(el,token);
+  if(reducedMotion || start===target){el.textContent=formatter(target);return}
+  const t0=performance.now(),dur=420;
+  function frame(now){
+    if(animations.get(el)!==token) return;
+    const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);
+    el.textContent=formatter(start+(target-start)*e);
+    if(p<1) requestAnimationFrame(frame); else el.textContent=formatter(target);
+  }
+  requestAnimationFrame(frame);
+}
+function flash(card){
+  if(reducedMotion) return;
+  card.classList.remove("flash");
+  void card.offsetWidth;
+  card.classList.add("flash");
+  setTimeout(()=>card.classList.remove("flash"),360);
+}
+function showToast(text){
+  els.toast.textContent=text;
+  els.toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t=setTimeout(()=>els.toast.classList.remove("show"),1700);
+}
+
+function populateEtfs(){
+  els.singleEtf.innerHTML=ETF_NAMES.map(n=>`<option value="${n}">${n} · ${ETF[n].kindLabel}</option>`).join("");
+}
+function portfolioOptions(selected){
+  return ETF_NAMES.map(n=>`<option value="${n}" ${n===selected?"selected":""}>${n} · ${ETF[n].kindLabel}</option>`).join("");
+}
+
+function singleGrowthRate(){
+  const d=ETF[els.singleEtf.value];
+  if(d.kind==="income") return num(els.incomeScenario.value)/100;
+  const mode=els.growthMode.value;
+  if(mode==="recent") return d.growthRecent/100;
+  if(mode==="conservative") return Math.max(0,d.growthLong-3)/100;
+  if(mode==="custom") return num(els.customGrowth.value)/100;
+  return d.growthLong/100;
+}
+function refreshSingleScenario(){
+  const d=ETF[els.singleEtf.value];
+  els.growthScenarioBox.style.display=d.kind==="growth"?"block":"none";
+  els.incomeScenarioBox.style.display=d.kind==="income"?"block":"none";
+  if(d.kind==="growth"){
+    const mode=els.growthMode.value;
+    els.customGrowthWrap.style.display=mode==="custom"?"block":"none";
+    els.growthInfo.innerHTML=`장기 CAGR <b>${d.growthLong.toFixed(1)}%</b> · 최근 5년 <b>${d.growthRecent.toFixed(1)}%</b>`;
+  }
+}
+function updateSingleMeta(){
+  const name=els.singleEtf.value,d=ETF[name];
+  els.singleEtfMeta.innerHTML=`
+    <span class="meta-chip">${d.kindLabel}</span>
+    <span class="meta-chip">${d.freq} 분배</span>
+    <span class="meta-chip">참고 분배율 ${d.rate.toFixed(2)}%</span>`;
+}
+
+function calcSingle(){
+  const name=els.singleEtf.value,d=ETF[name];
+  const P=num(els.singlePrincipal.value),Y=num(els.singleYield.value)/100,T=num(els.singleTax.value)/100;
+  const G=singleGrowthRate(),N=num(els.singleYears.value)||10;
+  const annualGross=P*Y,annualNet=annualGross*(1-T),monthly=annualNet/12;
+  animateNumber(els.singleMonthly,monthly,won);
+  animateNumber(els.singleAnnualNet,annualNet,won);
+  animateNumber(els.singleAnnualGross,annualGross,won);
+  animateNumber(els.singleQuarter,annualNet/4,won);
+  animateNumber(els.singleNetYield,Y*(1-T)*100,v=>pct(v,2));
+
+  let cum=0,cum10=0,rows="",series=[];
+  for(let y=1;y<=N;y++){
+    const gross=annualGross*Math.pow(1+G,y-1);
+    const net=gross*(1-T);
+    cum+=net;if(y<=10)cum10+=net;
+    series.push({year:y,value:net/12});
+    rows+=`<tr><td>${y}년차</td><td>${won(gross)}</td><td>${won(net)}</td><td>${won(net/12)}</td><td>${won(cum)}</td></tr>`;
+  }
+  animateNumber(els.singleCum10,cum10,won);
+  els.singleGrowthRows.innerHTML=rows;
+  els.singleChartEnd.textContent=N+"년";
+  els.singleBasis.textContent=`${name} · ${humanMoney(P)} · 분배율 ${pct(Y*100,2)} · 원천징수 ${pct(T*100,1)}`;
+  renderLineChart(els.singleGrowthChart,series,{valueLabel:"월 세후",formatter:won});
+  calcSingleGoal();
+  renderCompare(P,T);
+  flash(els.singleResultCard);
+}
+
+function calcSingleGoal(){
+  const M=num(els.singleGoal.value),Y=num(els.singleYield.value)/100,T=num(els.singleTax.value)/100;
+  if(Y<=0 || T>=1){
+    els.singleNeeded.textContent="-";
+    els.singleGoalNote.textContent="현재 분배율과 원천징수율을 확인해주세요.";
+    return;
+  }
+  const need=M*12/(Y*(1-T));
+  animateNumber(els.singleNeeded,need,won);
+  els.singleGoalNote.textContent=`${els.singleEtf.value} 현재 가정 기준으로 월 세후 ${humanMoney(M)}을 만들기 위한 단순 역산 값이에요.`;
+}
+
+function renderCompare(P,T){
+  const vals=ETF_NAMES.map(name=>({
+    name,kind:ETF[name].kindLabel,rate:ETF[name].rate,
+    monthly:P*(ETF[name].rate/100)*(1-T)/12
+  }));
+  const max=Math.max(...vals.map(v=>v.monthly),1);
+  const old={};
+  els.compareList.querySelectorAll(".compare-row").forEach(r=>{
+    const bar=r.querySelector(".bar-fill");old[r.dataset.name]=bar?parseFloat(bar.style.width)||0:0;
+  });
+  els.compareList.innerHTML=vals.map(v=>`
+    <div class="compare-row" data-name="${v.name}">
+      <div class="compare-name"><b>${v.name}</b><span>${v.kind}</span></div>
+      <div class="compare-rate">${v.rate.toFixed(2)}%</div>
+      <div class="compare-money">${won(v.monthly)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${old[v.name]||0}%"></div></div>
+    </div>`).join("");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    els.compareList.querySelectorAll(".compare-row").forEach((r,i)=>{
+      r.querySelector(".bar-fill").style.width=(vals[i].monthly/max*100)+"%";
+    });
+  }));
+}
+
+let portSeq=0;
+function addPortfolioRow(name="SCHD",weight=0){
+  const id=++portSeq;
+  const row=document.createElement("div");
+  row.className="portfolio-row";
+  row.dataset.id=id;
+  row.innerHTML=`
+    <div>
+      <label>ETF</label>
+      <select class="port-etf">${portfolioOptions(name)}</select>
+    </div>
+    <div>
+      <label>비중</label>
+      <input class="port-weight" type="number" min="0" max="100" step="1" value="${weight}">
+    </div>
+    <div class="rate-col">
+      <label>참고 분배율 %</label>
+      <input class="port-rate" type="number" step=".01" value="${ETF[name].rate}">
+    </div>
+    <button class="icon-btn port-remove" type="button" aria-label="${name} 삭제">×</button>`;
+  row.querySelector(".port-etf").addEventListener("change",e=>{
+    row.querySelector(".port-rate").value=ETF[e.target.value].rate;
+    row.querySelector(".port-remove").setAttribute("aria-label",e.target.value+" 삭제");
+    calcPortfolio();
+  });
+  row.querySelectorAll("input").forEach(i=>i.addEventListener("input",calcPortfolio));
+  row.querySelector(".port-remove").addEventListener("click",()=>{
+    const remove=()=>{row.remove();calcPortfolio()};
+    if(reducedMotion){remove();return}
+    row.classList.add("removing");
+    setTimeout(remove,220);
+  });
+  els.portfolioRows.appendChild(row);
+  calcPortfolio();
+}
+function portfolioDetails(){
+  return Array.from(els.portfolioRows.querySelectorAll(".portfolio-row")).map(r=>({
+    name:r.querySelector(".port-etf").value,
+    weight:num(r.querySelector(".port-weight").value),
+    rate:num(r.querySelector(".port-rate").value)
+  })).filter(x=>x.weight>=0);
+}
+function renderAllocation(details,totalW){
+  els.weightStatus.textContent=Number.isInteger(totalW)?totalW+"%":totalW.toFixed(1)+"%";
+  const ok=Math.abs(totalW-100)<.01;
+  els.weightStatus.className="weight-status "+(ok?"ok":"bad");
+  els.weightHint.textContent=ok?"비중 합계가 100%예요.":"합계가 100%가 아니어도 입력 비중을 100%로 환산해 계산해요.";
+  if(totalW<=0){els.allocationBar.innerHTML="";els.allocationLegend.innerHTML="";return}
+  els.allocationBar.innerHTML=details.filter(x=>x.weight>0).map((x,i)=>{
+    const width=x.weight/totalW*100;
+    return `<div class="allocation-seg" title="${x.name} ${x.weight}%" style="width:${width}%;background:${BLUE_SHADES[i%BLUE_SHADES.length]}"></div>`;
+  }).join("");
+  els.allocationLegend.innerHTML=details.filter(x=>x.weight>0).map((x,i)=>`
+    <span class="legend-item"><i class="legend-dot" style="background:${BLUE_SHADES[i%BLUE_SHADES.length]}"></i>${x.name} ${x.weight}%</span>`).join("");
+}
+function growthFor(name){ return name==="SCHD"?.076:name==="DGRO"?.092:0; }
+
+function calcPortfolio(){
+  const P=num(els.portfolioPrincipal.value),T=num(els.portfolioTax.value)/100;
+  const details=portfolioDetails();
+  const totalW=details.reduce((s,x)=>s+x.weight,0);
+  renderAllocation(details,totalW);
+  if(totalW<=0){
+    [els.portfolioMonthly,els.portfolioAnnual,els.portfolioYield,els.portfolioNetYield,els.portfolioCum10,els.portfolioNeeded].forEach(e=>e.textContent="-");
+    els.portfolioBreakdownCards.innerHTML="";
+    els.portfolioBreakdownRows.innerHTML="";
+    return;
+  }
+  const weighted=details.reduce((s,x)=>s+(x.weight/100)*(x.rate/100),0);
+  const effective=weighted/(totalW/100);
+  const annual=P*effective*(1-T);
+  animateNumber(els.portfolioMonthly,annual/12,won);
+  animateNumber(els.portfolioAnnual,annual,won);
+  animateNumber(els.portfolioYield,effective*100,v=>pct(v,2));
+  animateNumber(els.portfolioNetYield,effective*(1-T)*100,v=>pct(v,2));
+
+  let tenCum=0;
+  for(let y=1;y<=10;y++){
+    details.forEach(x=>{
+      const share=x.weight/totalW,g=growthFor(x.name);
+      tenCum+=P*share*(x.rate/100)*Math.pow(1+g,y-1)*(1-T);
+    });
+  }
+  animateNumber(els.portfolioCum10,tenCum,won);
+  els.portfolioBasis.textContent=`${humanMoney(P)} · ${details.length}개 ETF · 가중 분배율 ${pct(effective*100,2)} · 원천징수 ${pct(T*100,1)}`;
+
+  const items=details.filter(x=>x.weight>0).map(x=>{
+    const share=x.weight/totalW,alloc=P*share,a=alloc*(x.rate/100)*(1-T);
+    return {...x,share,alloc,annual:a,monthly:a/12};
+  });
+  els.portfolioBreakdownCards.innerHTML=items.slice(0,6).map(x=>`
+    <div class="breakdown-item"><span>${x.name} · ${(x.share*100).toFixed(1)}%</span><b>${won(x.monthly)}/월</b></div>`).join("");
+  els.portfolioBreakdownRows.innerHTML=items.map(x=>`
+    <tr><td>${x.name}</td><td>${(x.share*100).toFixed(1)}%</td><td>${won(x.alloc)}</td><td>${won(x.annual)}</td><td>${won(x.monthly)}</td></tr>`).join("");
+
+  const goal=num(els.portfolioGoal.value);
+  if(effective>0 && T<1) animateNumber(els.portfolioNeeded,goal*12/(effective*(1-T)),won);
+
+  const N=num(els.portfolioYears.value)||20,reinvest=els.portfolioReinvest.checked;
+  let asset=P,cum=0,series=[];
+  for(let y=1;y<=N;y++){
+    let annualNet=0;
+    details.forEach(x=>{
+      const share=x.weight/totalW;
+      annualNet+=asset*share*(x.rate/100)*Math.pow(1+growthFor(x.name),y-1)*(1-T);
+    });
+    cum+=annualNet;
+    if(reinvest) asset+=annualNet;
+    series.push({year:y,value:annualNet});
+  }
+  const last=series.length?series[series.length-1].value:0;
+  animateNumber(els.futureAnnual,last,won);
+  animateNumber(els.futureMonthly,last/12,won);
+  animateNumber(els.futureAsset,asset,won);
+  animateNumber(els.futureCum,cum,won);
+  renderLineChart(els.portfolioGrowthChart,series,{valueLabel:"연 세후",formatter:won});
+  flash(els.portfolioResultCard);
+}
+
+function resample(arr,n){
+  if(!arr || !arr.length) return Array(n).fill(0);
+  if(arr.length===n) return arr.slice();
+  if(n===1) return [arr[0]];
+  const out=[];
+  for(let i=0;i<n;i++){
+    const pos=i*(arr.length-1)/(n-1),lo=Math.floor(pos),hi=Math.min(arr.length-1,Math.ceil(pos)),t=pos-lo;
+    out.push(arr[lo]*(1-t)+arr[hi]*t);
+  }
+  return out;
+}
+function renderLineChart(container,series,opts){
+  const values=series.map(x=>Math.max(0,x.value));
+  const years=series.map(x=>x.year);
+  if(!values.length){container.innerHTML="";return}
+  let state=container._chart;
+  if(!state){
+    const uid="g"+Math.random().toString(36).slice(2,8);
+    container.innerHTML=`
+      <svg viewBox="0 0 720 270" role="img" aria-hidden="true">
+        <defs><linearGradient id="${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2f6fdb" stop-opacity=".20"/><stop offset="100%" stop-color="#2f6fdb" stop-opacity=".015"/></linearGradient></defs>
+        <g class="grid"></g>
+        <path class="area" fill="url(#${uid})"></path>
+        <path class="line" fill="none" stroke="#2f6fdb" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"></path>
+        <line class="guide" y1="20" y2="228" stroke="#9bb8e6" stroke-width="1" stroke-dasharray="4 4" opacity="0"></line>
+        <circle class="focus-dot" r="5" fill="#fff" stroke="#2f6fdb" stroke-width="3" opacity="0"></circle>
+        <circle class="last-dot" r="4.5" fill="#2f6fdb"></circle>
+        <g class="axis"></g>
+        <rect class="hit" x="58" y="16" width="638" height="218" fill="transparent"></rect>
+      </svg>
+      <div class="chart-tooltip"></div>`;
+    state={
+      svg:container.querySelector("svg"),grid:container.querySelector(".grid"),area:container.querySelector(".area"),
+      line:container.querySelector(".line"),guide:container.querySelector(".guide"),focus:container.querySelector(".focus-dot"),
+      last:container.querySelector(".last-dot"),axis:container.querySelector(".axis"),hit:container.querySelector(".hit"),
+      tip:container.querySelector(".chart-tooltip"),prev:[]
+    };
+    container._chart=state;
+    const pointer=e=>{
+      if(!container._chartData || !container._chartData.length) return;
+      const rect=state.svg.getBoundingClientRect();
+      const px=(e.clientX-rect.left)/rect.width*720;
+      const plotX=Math.max(58,Math.min(696,px));
+      const data=container._chartData,idx=Math.round((plotX-58)/638*(data.length-1));
+      const x=58+(data.length===1?0:idx/(data.length-1)*638);
+      const max=container._chartMax||1,min=0,plotH=208;
+      const y=228-(data[idx].value-min)/(max-min||1)*plotH;
+      state.guide.setAttribute("x1",x);state.guide.setAttribute("x2",x);state.guide.setAttribute("opacity","1");
+      state.focus.setAttribute("cx",x);state.focus.setAttribute("cy",y);state.focus.setAttribute("opacity","1");
+      state.tip.textContent=`${data[idx].year}년 · ${opts.formatter(data[idx].value)}`;
+      state.tip.style.display="block";
+      state.tip.style.left=Math.max(8,Math.min(92,x/720*100))+"%";
+      state.tip.style.top=Math.max(12,Math.min(88,y/270*100))+"%";
+    };
+    state.hit.addEventListener("pointermove",pointer);
+    state.hit.addEventListener("pointerdown",pointer);
+    state.hit.addEventListener("pointerleave",()=>{state.guide.setAttribute("opacity","0");state.focus.setAttribute("opacity","0");state.tip.style.display="none"});
+  }
+  const maxRaw=Math.max(...values,1),max=maxRaw*1.10;
+  container._chartData=series;container._chartMax=max;
+  const xOf=i=>58+(values.length===1?0:i/(values.length-1)*638);
+  const yOf=v=>228-(v/max)*208;
+  const pointsOf=arr=>arr.map((v,i)=>`${xOf(i).toFixed(2)},${yOf(v).toFixed(2)}`).join(" ");
+  const pathOf=arr=>"M "+pointsOf(arr).replaceAll(" "," L ");
+  const areaOf=arr=>{
+    const pts=arr.map((v,i)=>`${xOf(i).toFixed(2)},${yOf(v).toFixed(2)}`).join(" L ");
+    return `M 58,228 L ${pts} L 696,228 Z`;
+  };
+
+  state.grid.innerHTML=[0,.25,.5,.75,1].map(t=>{
+    const y=228-t*208;
+    return `<line x1="58" x2="696" y1="${y}" y2="${y}" stroke="#edf1f6" stroke-width="1"/>`;
+  }).join("");
+  const tickVals=[0,.25,.5,.75,1].map(t=>max*t);
+  state.axis.innerHTML=tickVals.map((v,i)=>{
+    const y=228-i*.25*208;
+    const label=v>=100000000?Math.round(v/100000000)+"억":v>=10000?Math.round(v/10000)+"만":Math.round(v);
+    return `<text x="48" y="${y+4}" text-anchor="end" fill="#929dad" font-size="10">${label}</text>`;
+  }).join("")+
+  `<text x="58" y="252" fill="#929dad" font-size="10">1년</text>
+   <text x="696" y="252" text-anchor="end" fill="#929dad" font-size="10">${years[years.length-1]}년</text>`;
+
+  const from=resample(state.prev,values.length);
+  const start=from.length?from:Array(values.length).fill(0);
+  const dur=reducedMotion?1:520,t0=performance.now();
+  state.animToken=(state.animToken||0)+1;
+  const token=state.animToken;
+  function frame(now){
+    if(state.animToken!==token) return;
+    const p=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-p,3);
+    const cur=values.map((v,i)=>start[i]+(v-start[i])*e);
+    state.line.setAttribute("d",pathOf(cur));
+    state.area.setAttribute("d",areaOf(cur));
+    const li=cur.length-1;
+    state.last.setAttribute("cx",xOf(li));state.last.setAttribute("cy",yOf(cur[li]));
+    if(p<1) requestAnimationFrame(frame);else state.prev=values.slice();
+  }
+  requestAnimationFrame(frame);
+}
+
+async function shareResult(mode){
+  let text;
+  if(mode==="single"){
+    text=`${els.singleEtf.value} ${humanMoney(num(els.singlePrincipal.value))} 투자 가정 → 예상 월평균 세후 현금흐름 ${els.singleMonthly.textContent} · AssetLab`;
+  }else{
+    text=`배당 ETF 포트폴리오 ${humanMoney(num(els.portfolioPrincipal.value))} 투자 가정 → 예상 월평균 세후 현금흐름 ${els.portfolioMonthly.textContent} · AssetLab`;
+  }
+  const url=location.protocol.startsWith("http")?location.href:"";
+  try{
+    if(navigator.share){await navigator.share({title:"AssetLab 배당 ETF 계산기",text,url});return}
+    await navigator.clipboard.writeText(text+(url?" "+url:""));
+    showToast("결과를 복사했어요.");
+  }catch(e){
+    if(e && e.name!=="AbortError") showToast("공유를 완료하지 못했어요.");
+  }
+}
+
+function setMode(mode){
+  const single=mode==="single";
+  els.singlePanel.hidden=!single;els.portfolioPanel.hidden=single;
+  els.singleTab.setAttribute("aria-selected",String(single));
+  els.portfolioTab.setAttribute("aria-selected",String(!single));
+  if(single) calcSingle(); else calcPortfolio();
+}
+
+function wire(){
+  populateEtfs();
+  els.singleEtf.value="SCHD";
+  updateSingleMeta();refreshSingleScenario();
+
+  els.singleEtf.addEventListener("change",()=>{
+    const d=ETF[els.singleEtf.value];
+    els.singleYield.value=d.rate;
+    els.growthMode.value="long";
+    updateSingleMeta();refreshSingleScenario();calcSingle();
+  });
+  [els.singlePrincipal,els.singleYield,els.singleTax,els.singleYears,els.customGrowth,els.incomeScenario].forEach(el=>{
+    el.addEventListener("input",calcSingle);el.addEventListener("change",calcSingle);
+  });
+  els.growthMode.addEventListener("change",()=>{refreshSingleScenario();calcSingle()});
+  els.singleGoal.addEventListener("input",()=>{formatMoneyInput(els.singleGoal);calcSingleGoal()});
+  els.singleShareBtn.addEventListener("click",()=>shareResult("single"));
+
+  els.portfolioPrincipal.addEventListener("input",()=>{formatMoneyInput(els.portfolioPrincipal);calcPortfolio()});
+  els.portfolioTax.addEventListener("input",calcPortfolio);
+  els.portfolioYears.addEventListener("change",calcPortfolio);
+  els.portfolioReinvest.addEventListener("change",calcPortfolio);
+  els.portfolioGoal.addEventListener("input",()=>{formatMoneyInput(els.portfolioGoal);calcPortfolio()});
+  els.addPortfolioRow.addEventListener("click",()=>addPortfolioRow("DGRO",0));
+  els.portfolioShareBtn.addEventListener("click",()=>shareResult("portfolio"));
+
+  els.singlePrincipal.addEventListener("input",()=>{formatMoneyInput(els.singlePrincipal);calcSingle()});
+
+  document.querySelectorAll(".quick-chip[data-money-target]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const target=$(btn.dataset.moneyTarget);
+      target.value=comma(Number(btn.dataset.value));
+      updateHumanFor(target);
+      target.dispatchEvent(new Event("input",{bubbles:true}));
+    });
+  });
+
+  els.singleTab.addEventListener("click",()=>setMode("single"));
+  els.portfolioTab.addEventListener("click",()=>setMode("portfolio"));
+
+  document.querySelectorAll(".money-format").forEach(updateHumanFor);
+
+  addPortfolioRow("SCHD",70);
+  addPortfolioRow("JEPI",30);
+  calcSingle();
+  calcPortfolio();
+  setMode("single");
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",wire); else wire();
+})();
+</script>
+<!-- AssetLab Dividend Calculator · public release -->
+</body>
+</html>
