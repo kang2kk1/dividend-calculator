@@ -16,104 +16,94 @@
 .grid{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(0,1.1fr);gap:18px;align-items:start}.card{background:#fff;border:1px solid var(--line);border-radius:23px;padding:24px;box-shadow:0 12px 36px rgba(31,45,61,.05)}.card h2{font-size:21px;letter-spacing:-.04em;margin:0 0 5px}.desc,.hint{font-size:13px;line-height:1.6;color:var(--sub)}.desc{margin:0 0 20px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field.full{grid-column:1/-1}.field label{display:block;font-size:13px;font-weight:750;margin-bottom:7px}.input{position:relative}.input input{width:100%;height:46px;border:1px solid #dfe6ee;border-radius:12px;background:#fff;padding:0 43px 0 13px;outline:none;font-weight:700;font-variant-numeric:tabular-nums}.input input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--soft)}.unit{position:absolute;right:12px;top:12px;font-size:13px;color:var(--sub)}.hint{margin:7px 0 0}.assumption{margin:20px 0 0;padding:14px;background:#f7f9fc;border:1px solid var(--line);border-radius:13px;font-size:12px;line-height:1.65;color:#526072}
 .results{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:17px;border:1px solid var(--line);border-radius:15px;background:#fff}.stat.primary{background:var(--soft);border-color:#dce9fc}.stat span{display:block;color:var(--sub);font-size:12px;margin-bottom:8px}.stat strong{font-size:22px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.stat small{display:block;color:var(--sub);margin-top:7px;font-size:11px;line-height:1.5}.chart-card{margin-top:18px}.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--sub);margin:12px 0}.legend b{display:inline-block;width:15px;height:3px;vertical-align:middle;margin-right:5px;background:var(--blue)}.legend .shock{background:var(--red)}svg{display:block;width:100%;height:auto;overflow:visible}.chart-label{font-size:11px;fill:var(--sub)}.chart-note{font-size:12px;line-height:1.6;color:var(--sub);margin:5px 0 0}.share{border:1px solid #d7e5fb;border-radius:10px;background:#fff;color:#245dbb;padding:9px 12px;font-size:12px;font-weight:800;white-space:nowrap}.section-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.below{margin:18px 0 60px}.below details{border-top:1px solid var(--line);padding:15px 0;font-size:14px}.below summary{font-weight:750;cursor:pointer}.below p{color:var(--sub);line-height:1.7;margin:10px 0 0}.notice{background:#fff8e6;border:1px solid #f3e5be;padding:16px;border-radius:14px;color:#725414;font-size:13px;line-height:1.65;margin-top:18px}footer{text-align:center;color:#8892a3;font-size:12px;padding:0 20px 42px}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.hero{padding:36px 0 24px}.card{padding:19px}.stat strong{font-size:19px}}@media(max-width:380px){.fields{grid-template-columns:1fr}.results{grid-template-columns:1fr 1fr}.stat{padding:12px}.stat strong{font-size:17px}}
-</style>
-</head>
-<body>
+
+select{font:inherit;max-width:100%;padding:9px 10px;border:1px solid #dfe6ee;border-radius:10px;background:white;color:var(--ink)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.controls label{font-size:12px;color:var(--sub)}.advanced{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}.advanced summary{font-size:15px;font-weight:800;cursor:pointer;margin-bottom:15px}.advanced h3{font-size:14px;margin:18px 0 12px}.preset{border:1px solid #dfe6ee;border-radius:99px;padding:7px 10px;background:white;color:#526072;font-size:12px}.preset:hover{background:var(--soft)}.plot{position:relative;margin-top:10px;touch-action:pan-y}.tooltip{position:absolute;pointer-events:none;top:10px;width:230px;max-width:95%;background:#172333;color:white;border-radius:12px;padding:12px;box-shadow:0 6px 20px #14253626;font-size:12px;line-height:1.9;z-index:2}.tooltip[hidden]{display:none}.tooltip strong{display:block;color:white;font-size:13px}.tooltip .blue{color:#a7c8ff}.tooltip .red{color:#ffb3ae}.year-control{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;margin-top:10px;font-size:12px}.year-control input{min-width:0;width:100%;accent-color:var(--blue)}.selected-year{padding:12px 14px;background:#f7f9fc;border-radius:12px;font-size:12px;line-height:1.8;margin-top:10px;font-variant-numeric:tabular-nums}.selected-year b{color:#245dbb}.ledger{margin-top:20px}.table-scroll{overflow:auto;max-height:550px;margin-top:16px;border:1px solid var(--line);border-radius:12px}table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}th,td{padding:13px 12px;text-align:right;border-bottom:1px solid var(--line)}th{position:sticky;top:0;background:#f3f6fb;z-index:1;color:#566174;font-size:11px}th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:#fff}th:first-child{z-index:3;background:#f3f6fb}tbody tr.selected td{background:#edf4ff}td small{display:block;color:#778395;margin-top:3px}.negative{color:#bc4444}.positive{color:#245dbb}.badge{display:inline-block;padding:2px 5px;border-radius:4px;background:#fff1d2;color:#805c10;font-size:10px;margin-left:5px}.status-note{margin-top:14px;padding:12px 14px;border-radius:12px;background:#f7f9fc;font-size:12px;line-height:1.7;color:#526072}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.summary-label{font-size:12px;color:var(--sub);margin:0 0 14px}.table-note{font-size:12px;color:var(--sub);line-height:1.7;margin:12px 0 0}.chart-card .section-top{flex-wrap:wrap}.below{margin-top:20px}.stat strong{overflow-wrap:anywhere}
+@media(max-width:720px){.hero h1{font-size:34px}.table-scroll{max-height:460px}.section-top{flex-wrap:wrap}.tooltip{width:210px}.year-control{gap:8px}.ledger{padding:16px}.chart-card{padding:16px}.selected-year span{display:block}}
+
+</style></head><body>
 <header class="header wrap"><a class="brand" href="../"><span class="mark">A</span>AssetLab</a><a class="back" href="../dividend/">배당 ETF 계산기 ↗</a></header>
 <main class="wrap">
-  <section class="hero"><div class="eyebrow">생활비 인출 시뮬레이터</div><h1>매달 생활비를 쓰면<br>내 자산은 어떻게 될까?</h1><p>생활비와 다른 소득을 입력하고, 장기 수익률과 물가를 바꿔보세요. 첫해 자산이 크게 하락하는 경우도 함께 보여줍니다.</p></section>
-  <div class="grid">
-    <section class="card" aria-labelledby="input-title"><h2 id="input-title">내 조건 입력</h2><p class="desc">값을 바꾸면 결과가 바로 달라집니다. 금액은 모두 원화 기준입니다.</p>
-      <div class="fields">
-        <div class="field full"><label for="assets">현재 투자자산</label><div class="input"><input id="assets" type="text" inputmode="numeric" autocomplete="off" value="500,000,000"><span class="unit">원</span></div><p class="hint" id="assetsHint"></p></div>
-        <div class="field"><label for="expense">월 생활비</label><div class="input"><input id="expense" type="text" inputmode="numeric" autocomplete="off" value="3,500,000"><span class="unit">원</span></div></div>
-        <div class="field"><label for="otherIncome">월 다른 소득</label><div class="input"><input id="otherIncome" type="text" inputmode="numeric" autocomplete="off" value="0"><span class="unit">원</span></div><p class="hint">연금·근로소득 등. 매년 같은 금액으로 가정</p></div>
-        <div class="field"><label for="dividend">월 세후 배당금</label><div class="input"><input id="dividend" type="text" inputmode="numeric" autocomplete="off" value="1,000,000"><span class="unit">원</span></div><p class="hint">생활비 중 배당으로 충당하는 몫</p></div>
-        <div class="field"><label for="years">계산 기간</label><div class="input"><input id="years" type="number" min="1" max="60" step="1" inputmode="numeric" value="30"><span class="unit">년</span></div></div>
-        <div class="field"><label for="returnRate">연 총수익률</label><div class="input"><input id="returnRate" type="number" min="-90" max="50" step="0.5" inputmode="decimal" value="4"><span class="unit">%</span></div><p class="hint">배당과 세금·비용을 반영한 자산 전체 수익률</p></div>
-        <div class="field"><label for="inflation">연 생활비 상승률</label><div class="input"><input id="inflation" type="number" min="0" max="30" step="0.5" inputmode="decimal" value="2"><span class="unit">%</span></div></div>
-      </div>
-      <p class="assumption"><strong>배당금 입력 시 주의</strong><br>배당금은 연 총수익률 안에 포함됩니다. 여기서는 생활비 충당 내역만 보여주며, 자산 잔액에 다시 더하지 않습니다. 배당을 포함한 투자자산 전체를 ‘현재 투자자산’에 입력하세요.</p>
-    </section>
-    <div>
-      <section class="card" aria-live="polite"><div class="section-top"><h2>한눈에 보는 결과</h2><button class="share" id="share" type="button">조건 공유</button></div><p class="desc">수익률이 매년 일정할 때와 첫해에 −25% 하락할 때를 비교합니다.</p>
-        <div class="results">
-          <div class="stat primary"><span>지금 월 생활비 부족분</span><strong id="gap">—</strong><small>생활비 − 다른 소득 − 세후 배당금</small></div>
-          <div class="stat"><span>연간 생활비 / 자산</span><strong id="rate">—</strong><small>다른 소득을 뺀 금액 기준</small></div>
-          <div class="stat"><span id="normalLabel">일정 수익률 · 30년 뒤</span><strong id="normal">—</strong><small id="normalSub">오늘 돈 가치로 표시</small></div>
-          <div class="stat"><span id="shockLabel">첫해 −25% · 30년 뒤</span><strong id="shock">—</strong><small id="shockSub">이후 입력한 수익률 적용</small></div>
-        </div>
-      </section>
-      <section class="card chart-card"><h2>자산 흐름</h2><div class="legend"><span><b></b>매년 같은 수익률</span><span><b class="shock"></b>첫해 −25% 하락</span></div><svg id="chart" viewBox="0 0 560 246" role="img" aria-label="기간별 물가를 반영한 자산 잔액 비교"></svg><p class="chart-note">선은 미래 잔액을 <strong>오늘 돈의 가치</strong>로 환산한 결과입니다. 하락 시나리오는 첫 12개월만 −25%, 그다음부터 입력 수익률을 사용합니다.</p></section>
-    </div>
-  </div>
-  <div class="below"><section class="card"><h2>계산 방식</h2><details><summary>매월 자산은 어떻게 변하나요?</summary><p>월말에 생활비를 지출한다고 가정합니다. 전월 자산에 월간 환산 총수익률을 적용하고 다른 소득을 더한 뒤 생활비를 뺍니다. 생활비는 매월 물가 상승률만큼 늘리고, 다른 소득은 고정합니다. 자산이 부족해지는 첫 달을 소진 시점으로 표시하며 음수 잔액은 0으로 둡니다.</p></details><details><summary>배당금이 부족분과 잔액에 다르게 쓰이는 이유는?</summary><p>배당은 현금흐름을 이해하는 데 사용합니다. 이미 연 총수익률에 포함되어 있어 잔액 계산에는 별도로 더하거나 빼지 않습니다. 세후 배당금을 입력했다면 연 총수익률 역시 배당에 대한 세금과 비용을 반영한 수치로 가정하세요. 첫 달 부족분이 0원이어도 자산에서 배당이 지급되는 만큼 자산 잔액은 달라질 수 있습니다.</p></details><details><summary>이 결과가 실제 은퇴 가능성을 뜻하나요?</summary><p>아니요. 수익률의 순서, 물가 변동, 세금·건강보험료, 환율, 자산별 인출 순서, 배당 변동, 소득 변화는 단순화했습니다. 첫해 −25%도 한 가지 가정이지 최악의 경우나 발생 확률을 뜻하지 않습니다.</p></details></section><div class="notice">이 도구는 가정을 바꿔보는 참고용입니다. 결과를 투자 판단이나 은퇴 가능 판정으로 사용하기 전에 실제 현금흐름과 세금, 안전자금을 따로 확인하세요.</div></div>
+<section class="hero"><div class="eyebrow">생활비 인출 시뮬레이터</div><h1>생활비를 쓰면서도<br>자산은 얼마나 남을까?</h1><p>소득이 달라지는 시점, 시장 하락, 생활비 조절을 함께 계산하세요.<br>그래프에 커서를 올리거나 터치하면 연도별 잔액을 비교할 수 있습니다.</p></section>
+<div class="grid">
+<section class="card" aria-labelledby="input-title"><h2 id="input-title">내 조건 입력</h2><p class="desc">금액은 원화 기준 · 1년차는 지금부터 첫 12개월입니다.</p>
+<div class="fields">
+<div class="field full"><label for="assets">현재 투자자산</label><div class="input"><input id="assets" type="text" inputmode="numeric" autocomplete="off" value="500,000,000"><span class="unit">원</span></div><p class="hint" id="assetsHint"></p></div>
+<div class="field"><label for="expense">월 생활비</label><div class="input"><input id="expense" type="text" inputmode="numeric" value="3,500,000"><span class="unit">원</span></div></div>
+<div class="field"><label for="years">계산 기간</label><div class="input"><input id="years" type="number" min="1" max="60" value="30"><span class="unit">년</span></div></div>
+<div class="field"><label for="returnRate">연 총수익률</label><div class="input"><input id="returnRate" type="number" min="-90" max="50" step="0.5" value="4"><span class="unit">%</span></div></div>
+<div class="field"><label for="inflation">연 생활비 상승률</label><div class="input"><input id="inflation" type="number" min="0" max="30" step="0.5" value="2"><span class="unit">%</span></div></div>
+</div><p class="hint">총수익률은 배당을 포함하고 세금·비용을 차감한 수익률입니다.</p>
+<details class="advanced"><summary>소득과 배당 설정</summary><div class="fields">
+<div class="field full"><label for="otherIncome">월 다른 소득</label><div class="input"><input id="otherIncome" type="text" inputmode="numeric" value="0"><span class="unit">원</span></div><p class="hint">부수입·근로소득 등, 세후 금액</p></div>
+<div class="field"><label for="incomeStart">소득 시작</label><div class="input"><input id="incomeStart" type="number" min="1" max="60" value="1"><span class="unit">년차</span></div></div>
+<div class="field"><label for="incomeEnd">소득 종료</label><div class="input"><input id="incomeEnd" type="number" min="1" max="60" value="60"><span class="unit">년차</span></div></div>
+<div class="field"><label for="pension">월 연금 수령액</label><div class="input"><input id="pension" type="text" inputmode="numeric" value="0"><span class="unit">원</span></div></div>
+<div class="field"><label for="pensionStart">연금 시작</label><div class="input"><input id="pensionStart" type="number" min="1" max="60" value="25"><span class="unit">년차</span></div></div>
+<div class="field full"><label for="dividend">현재 월 세후 배당금</label><div class="input"><input id="dividend" type="text" inputmode="numeric" value="1,000,000"><span class="unit">원</span></div><p class="hint">현재 생활비 충당 내역에만 사용합니다.</p></div>
+</div><p class="hint" id="incomeHint"></p></details>
+<details class="advanced"><summary>시장 하락 시나리오</summary><div class="controls"><button class="preset" data-preset="early" type="button">첫해 하락</button><button class="preset" data-preset="long" type="button">2년 연속 하락</button><button class="preset" data-preset="late" type="button">10년차 하락</button></div><div class="fields" style="margin-top:15px">
+<div class="field full"><label for="shockRate">하락 구간의 연 수익률</label><div class="input"><input id="shockRate" type="number" min="-90" max="0" step="1" value="-25"><span class="unit">%</span></div></div>
+<div class="field"><label for="shockStart">하락 시작</label><div class="input"><input id="shockStart" type="number" min="1" max="60" value="1"><span class="unit">년차</span></div></div>
+<div class="field"><label for="shockYears">하락 지속 기간</label><div class="input"><input id="shockYears" type="number" min="1" max="60" value="1"><span class="unit">년</span></div></div>
+</div><p class="hint" id="shockHint"></p></details>
+<details class="advanced"><summary>하락 후 생활비 조절</summary><div class="field"><label for="cutPercent">다음 해 생활비 감액률</label><div class="input"><input id="cutPercent" type="number" min="0" max="50" value="0"><span class="unit">%</span></div></div><p class="hint">0%는 조절 안 함. 전년도 수익률이 음수면 다음 해에만 물가를 반영한 예정 생활비를 이 비율만큼 줄입니다. 이후 전년도 수익률이 0% 이상이면 예정 생활비로 복귀합니다. 감액은 중첩되지 않습니다.</p></details>
+<p class="assumption"><strong>배당금을 이중으로 더하지 않아요</strong><br>배당은 총수익률에 이미 포함됩니다. 자산에서는 생활비에서 다른 소득·연금을 뺀 금액을 인출합니다. 배당금 입력은 현재 현금흐름 설명에만 사용하며 미래 잔액에 별도로 더하지 않습니다.</p>
+<div class="actions"><button class="share" id="share" type="button">조건 공유</button><button class="share" id="reset" type="button">기본값으로 초기화</button></div><p class="hint" id="actionStatus" role="status"></p>
+</section>
+<div>
+<section class="card" aria-live="polite"><h2>한눈에 보는 결과</h2><p class="desc" id="summaryDesc"></p><div class="results">
+<div class="stat primary"><span>현재 월 생활비 부족분</span><strong id="gap">—</strong><small>생활비 − 현재 소득·연금 − 배당금</small></div>
+<div class="stat"><span>첫해 예정 인출률</span><strong id="rate">—</strong><small>물가 반영 생활비에서 소득·연금을 뺀 연간 금액 / 초기 자산</small></div>
+<div class="stat"><span id="normalLabel"></span><strong id="normal">—</strong><small id="normalSub"></small></div>
+<div class="stat"><span id="shockLabel"></span><strong id="shock">—</strong><small id="shockSub"></small></div>
+</div><p class="status-note" id="comparison"></p></section>
+<section class="card chart-card"><div class="section-top"><h2>자산 흐름</h2><label><select id="viewMode" aria-label="그래프 금액 기준"><option value="real">오늘 돈 가치</option><option value="nominal">미래 명목금액</option></select></label></div><div class="legend"><span><b></b>기준 시나리오</span><span><b class="shock"></b>하락 시나리오</span></div><div class="plot" id="plot"><svg id="chart" viewBox="0 0 600 280" role="img" aria-label="연도별 두 시나리오 자산 잔액 비교"></svg><div class="tooltip" id="tooltip" hidden></div></div><div class="year-control"><label for="inspectYear">연도 선택</label><input id="inspectYear" type="range" min="0" max="30" value="0"><output id="yearLabel" for="inspectYear">시작</output></div><div class="selected-year" id="yearReadout"></div><p class="chart-note">마우스 이동 · 화면 터치 · 연도 슬라이더로 정확한 잔액을 확인하세요. 오늘 돈 가치는 입력한 생활비 상승률로 할인한 금액입니다.</p></section>
+</div></div>
+<section class="card ledger" aria-labelledby="ledger-title"><div class="section-top"><h2 id="ledger-title">연도별 자산 현황</h2><div class="controls"><select id="tableScenario" aria-label="표 시나리오"><option value="shock">하락 시나리오</option><option value="normal">기준 시나리오</option></select><button class="share" id="csv" type="button">CSV 다운로드</button></div></div><p class="table-note">전년 대비 증감은 투자손익·입출금을 모두 반영합니다. 금액 단위는 원이며, ‘오늘 가치’ 열 외에는 해당 연도의 명목금액입니다. 모바일에서는 표를 좌우로 밀어보세요.</p><div class="table-scroll" tabindex="0" role="region" aria-label="연도별 자산 표, 좌우 스크롤 가능"><table><thead><tr><th scope="col">연도 / 수익률</th><th scope="col">연말 자산</th><th scope="col">오늘 가치</th><th scope="col">전년 대비 증감</th><th scope="col">투자손익</th><th scope="col">연 생활비</th><th scope="col">소득·연금</th><th scope="col">실제 자산 인출</th><th scope="col">잉여소득 적립</th><th scope="col">미충당 생활비</th></tr></thead><tbody id="ledgerRows"></tbody></table></div><p class="table-note">실제 자산 인출에는 배당으로 충당한 생활비도 포함됩니다. 소득이 생활비보다 많으면 남은 금액을 자산에 적립합니다. 미충당 생활비는 자산과 소득으로 충당하지 못한 금액이며, 0원 잔액에서 발생한 부족액을 부채로 누적하지 않습니다.</p></section>
+<div class="below"><section class="card"><h2>계산 방식과 가정</h2><details><summary>수익률·하락 기간은 어떻게 적용하나요?</summary><p>연 수익률을 월 복리 수익률로 환산하고 매월 말 생활비를 지출합니다. 기준 시나리오는 매년 입력한 총수익률, 하락 시나리오는 지정한 연도에만 하락 수익률을 적용합니다. 예를 들어 −25%가 2년 이어지면 인출 전 누적 하락률은 −43.75%입니다. 실제 일별 가격 경로와 변동성은 반영하지 않습니다.</p></details><details><summary>소득과 연금은 언제 들어오나요?</summary><p>다른 소득은 시작 연도 첫 달부터 종료 연도 마지막 달까지, 연금은 시작 연도부터 계산 기간 끝까지 들어옵니다. 입력한 세후 월 금액이 고정되며 물가에 따라 오르지 않습니다. 연금 시작이 계산 기간 뒤라면 결과에 포함되지 않습니다.</p></details><details><summary>소진과 잔액 0원은 같은 뜻인가요?</summary><p>생활비를 모두 충당하지 못한 첫 달을 소진 시점으로 표시합니다. 소득만으로 생활비가 충당되면 잔액이 0원이어도 소진으로 표시하지 않습니다. 소진 후 나중에 소득이 시작되면 자산이 다시 늘 수 있으므로 표의 미충당 생활비도 함께 확인하세요.</p></details><details><summary>이 결과가 은퇴 성공 확률인가요?</summary><p>정해진 가정에 따른 두 경로를 비교하는 도구입니다. 확률 예측이나 실제 은퇴 가능 판정이 아닙니다. 수익률·물가의 무작위 변동, 배당 변화, 환율, 자산별 세금과 건강보험료는 별도로 계산하지 않습니다.</p></details></section></div>
 </main><footer>© 2026 AssetLab · 투자와 은퇴를 숫자로 쉽게</footer>
-<script src="./calc.js"></script>
+<script src="./calc-v2.js"></script>
 <script>
 (function(){
-  "use strict";
-  const keys=["assets","expense","otherIncome","dividend","years","returnRate","inflation"];
-  const moneyKeys=["assets","expense","otherIncome","dividend"];
-  const ids=Object.fromEntries(keys.map(k=>[k,document.getElementById(k)]));
-  const limits={assets:[0,1e12],expense:[0,1e9],otherIncome:[0,1e9],dividend:[0,1e9],years:[1,60],returnRate:[-90,50],inflation:[0,30]};
-  const money=n=>Math.round(n).toLocaleString("ko-KR")+"원";
-  const compact=n=>n>=100000000?`${(n/100000000).toLocaleString("ko-KR",{maximumFractionDigits:1})}억 원`:n>=10000?`${Math.round(n/10000).toLocaleString("ko-KR")}만 원`:money(n);
-  function formatMoney(el){
-    const before=el.value.slice(0,el.selectionStart??el.value.length).replace(/\D/g,"").length;
-    const digits=el.value.replace(/\D/g,"");
-    el.value=digits?Number(digits).toLocaleString("ko-KR"):"";
-    if(document.activeElement===el){
-      let pos=0,count=0;
-      while(pos<el.value.length && count<before){if(/\d/.test(el.value[pos])) count++;pos++}
-      el.setSelectionRange(pos,pos);
-    }
-  }
-  function read(){
-    return Object.fromEntries(keys.map(k=>{const n=Number(ids[k].value.replaceAll(",",""));const [lo,hi]=limits[k];return [k,Math.max(lo,Math.min(hi,Number.isFinite(n)?n:lo))]}));
-  }
-  function when(month,years){return month===null?`${years}년 내 미소진`:`${Math.floor((month-1)/12)}년 ${((month-1)%12)+1}개월째 소진`}
-  function draw(base,shock,years){
-    const svg=document.getElementById("chart"),x=y=>42+496*y/years;
-    const max=Math.max(1,...base.rows.map(r=>r.realBalance),...shock.rows.map(r=>r.realBalance));
-    const y=v=>202-175*v/max;
-    const path=rows=>rows.map((r,i)=>`${i?"L":"M"}${x(r.year).toFixed(1)} ${y(r.realBalance).toFixed(1)}`).join(" ");
-    const grid=[0,.5,1].map(t=>`<line x1="42" y1="${y(max*t)}" x2="538" y2="${y(max*t)}" stroke="#e6ebf1"/><text class="chart-label" x="0" y="${y(max*t)+4}">${t===0?"0":compact(max*t).replace(" 원","")}</text>`).join("");
-    const labels=[0,Math.round(years/2),years].map(a=>`<text class="chart-label" x="${x(a)}" y="228" text-anchor="middle">${a}년</text>`).join("");
-    svg.innerHTML=grid+labels+`<path d="${path(base.rows)}" fill="none" stroke="#2f6fdb" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="${path(shock.rows)}" fill="none" stroke="#df605f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }
-  function render(){
-    const p=read(),years=Math.floor(p.years);
-    const base=AssetLabWithdrawal.simulate(p,p.returnRate),shock=AssetLabWithdrawal.simulate(p,-25);
-    const gap=Math.max(0,p.expense-p.otherIncome-p.dividend);
-    const netExpense=Math.max(0,p.expense-p.otherIncome);
-    document.getElementById("assetsHint").textContent=compact(p.assets);
-    document.getElementById("gap").textContent=compact(gap);
-    document.getElementById("rate").textContent=p.assets?`${(netExpense*12/p.assets*100).toFixed(1)}%`:"—";
-    document.getElementById("normalLabel").textContent=`일정 수익률 · ${years}년 뒤`;
-    document.getElementById("shockLabel").textContent=`첫해 −25% · ${years}년 뒤`;
-    document.getElementById("normal").textContent=compact(base.rows.at(-1).realBalance);
-    document.getElementById("shock").textContent=compact(shock.rows.at(-1).realBalance);
-    document.getElementById("normalSub").textContent=`오늘 돈 가치 · ${when(base.depletion,years)}`;
-    document.getElementById("shockSub").textContent=`오늘 돈 가치 · ${when(shock.depletion,years)}`;
-    draw(base,shock,years);
-  }
-  const query=new URLSearchParams(location.search);
-  keys.forEach(k=>{
-    if(query.has(k) && /^-?\d+(\.\d+)?$/.test(query.get(k))) ids[k].value=query.get(k);
-    if(moneyKeys.includes(k)){
-      formatMoney(ids[k]);
-      ids[k].addEventListener("input",e=>{if(e.isComposing)return;formatMoney(ids[k]);render()});
-      ids[k].addEventListener("compositionend",()=>{formatMoney(ids[k]);render()});
-      ids[k].addEventListener("blur",()=>{ids[k].value=read()[k].toLocaleString("ko-KR");render()});
-    }else ids[k].addEventListener("input",render);
-  });
-  document.getElementById("share").addEventListener("click",async()=>{
-    const q=new URLSearchParams();const p=read();keys.forEach(k=>q.set(k,p[k]));const url=new URL(location.href);url.search=q.toString();
-    try{if(navigator.share) await navigator.share({title:"AssetLab 생활비 인출 시뮬레이터",url:url.href});else {await navigator.clipboard.writeText(url.href);alert("조건 링크를 복사했어요.")}}catch(e){if(e.name!=="AbortError") prompt("이 링크를 복사하세요",url.href)}
-  });
-  render();
+"use strict";
+const $=id=>document.getElementById(id);
+const defaults={assets:500000000,expense:3500000,otherIncome:0,dividend:1000000,years:30,returnRate:4,inflation:2,incomeStart:1,incomeEnd:60,pension:0,pensionStart:25,shockRate:-25,shockStart:1,shockYears:1,cutPercent:0};
+const limits={assets:[0,1e12],expense:[0,1e9],otherIncome:[0,1e9],dividend:[0,1e9],years:[1,60],returnRate:[-90,50],inflation:[0,30],incomeStart:[1,60],incomeEnd:[1,60],pension:[0,1e9],pensionStart:[1,60],shockRate:[-90,0],shockStart:[1,60],shockYears:[1,60],cutPercent:[0,50]};
+const keys=Object.keys(defaults),moneyKeys=['assets','expense','otherIncome','dividend','pension'];
+const integers=['years','incomeStart','incomeEnd','pensionStart','shockStart','shockYears'];
+const num=n=>Math.round(n).toLocaleString('ko-KR'),won=n=>num(n)+'원';
+const compact=n=>Math.abs(n)>=1e8?(n/1e8).toLocaleString('ko-KR',{maximumFractionDigits:2})+'억 원':Math.abs(n)>=1e4?(n/1e4).toLocaleString('ko-KR',{maximumFractionDigits:0})+'만 원':won(n);
+const signed=n=>(Math.round(n)>0?'+':'')+num(n);
+let state,selectedYear=0;
+function read(){const p={};keys.forEach(k=>{const n=Number($(k).value.replaceAll(',',''));const [lo,hi]=limits[k];p[k]=Math.max(lo,Math.min(hi,Number.isFinite(n)?n:defaults[k]));if(integers.includes(k))p[k]=Math.floor(p[k])});p.incomeEnd=Math.max(p.incomeStart,p.incomeEnd);return p}
+function formatMoney(el){const before=el.value.slice(0,el.selectionStart??el.value.length).replace(/\D/g,'').length;const digits=el.value.replace(/\D/g,'').slice(0,15);el.value=digits?Number(digits).toLocaleString('ko-KR'):'';if(document.activeElement===el){let pos=0,count=0;while(pos<el.value.length&&count<before){if(/\d/.test(el.value[pos]))count++;pos++}el.setSelectionRange(pos,pos)}}
+function write(p){keys.forEach(k=>{$(k).value=moneyKeys.includes(k)?num(p[k]):p[k]})}
+function when(m,y){return m===null?y+'년 동안 생활비 충당':Math.floor((m-1)/12)+'년 '+((m-1)%12+1)+'개월째 첫 부족'}
+function amount(row){return $('viewMode').value==='real'?row.realBalance:row.balance}
+function draw(){const {p,normal,shock}=state;const ymax=Math.max(1,...normal.rows.map(amount),...shock.rows.map(amount));state.ymax=ymax;const x=t=>70+510*t/p.years,y=v=>226-200*v/ymax;state.x=x;state.y=y;
+const grid=[0,.5,1].map(t=>'<line x1="70" y1="'+y(ymax*t)+'" x2="580" y2="'+y(ymax*t)+'" stroke="#e6ebf1"/><text class="chart-label" x="64" y="'+(y(ymax*t)+4)+'" text-anchor="end">'+compact(ymax*t).replace(' 원','')+'</text>').join('');
+const years=[...new Set([0,Math.round(p.years/2),p.years])];const labels=years.map(t=>'<text class="chart-label" x="'+x(t)+'" y="252" text-anchor="middle">'+t+'년</text>').join('');
+const path=rows=>rows.map((r,i)=>(i?'L':'M')+x(r.year).toFixed(2)+' '+y(amount(r)).toFixed(2)).join(' ');
+$('chart').innerHTML=grid+labels+'<path d="'+path(normal.rows)+'" fill="none" stroke="#2f6fdb" stroke-width="3"/><path d="'+path(shock.rows)+'" fill="none" stroke="#df605f" stroke-width="3"/><line id="guide" y1="22" y2="230" stroke="#8493a8" stroke-dasharray="4 4"/><circle id="normalDot" r="5" fill="#2f6fdb" stroke="white" stroke-width="2"/><circle id="shockDot" r="5" fill="#df605f" stroke="white" stroke-width="2"/>';
+$('inspectYear').max=p.years;selectYear(selectedYear,false)}
+function selectYear(year,showTip){selectedYear=Math.max(0,Math.min(state.p.years,Math.round(year)));const n=state.normal.rows[selectedYear],s=state.shock.rows[selectedYear],title=selectedYear?selectedYear+'년차 말':'시작 시점';$('inspectYear').value=selectedYear;$('yearLabel').textContent=selectedYear?selectedYear+'년':'시작';const mode=$('viewMode').value==='real'?'오늘 돈 가치':'미래 명목금액';$('yearReadout').innerHTML='<strong>'+title+' · '+mode+'</strong><br><span><b>기준 '+won(amount(n))+'</b></span> <span class="negative">하락 '+won(amount(s))+'</span>';
+$('inspectYear').setAttribute('aria-valuetext',title+', 기준 '+won(amount(n))+', 하락 '+won(amount(s)));
+$('guide').setAttribute('x1',state.x(selectedYear));$('guide').setAttribute('x2',state.x(selectedYear));[['normalDot',n],['shockDot',s]].forEach(([id,r])=>{$(id).setAttribute('cx',state.x(selectedYear));$(id).setAttribute('cy',state.y(amount(r)))});
+$('tooltip').innerHTML='<strong>'+title+' · '+mode+'</strong><span class="blue">기준 '+won(amount(n))+'</span><br><span class="red">하락 '+won(amount(s))+'</span>';if(showTip){$('tooltip').hidden=false;const w=$('plot').clientWidth;$('tooltip').style.left=Math.max(0,Math.min(w-230,state.x(selectedYear)/600*w+12))+'px'}
+$('ledgerRows').querySelectorAll('tr').forEach(row=>row.classList.toggle('selected',Number(row.dataset.year)===selectedYear))}
+function ledger(){const rows=state[$('tableScenario').value].rows;const cell=n=>'<td>'+num(n)+'</td>';$('ledgerRows').innerHTML=rows.map(r=>{const delta='<td class="'+(r.change<0?'negative':'positive')+'">'+signed(r.change)+'<small>'+(r.changePct===null?'—':(r.changePct>0?'+':'')+r.changePct.toFixed(1)+'%')+'</small></td>';return '<tr data-year="'+r.year+'"'+(r.year===selectedYear?' class="selected"':'')+'><td>'+(r.year?r.year+'년차':'시작')+(r.cut?'<span class="badge">생활비 감액</span>':'')+'<small>'+(r.year?r.annualReturn+'%':'—')+'</small></td>'+cell(r.balance)+cell(r.realBalance)+delta+cell(r.gain)+cell(r.expense)+cell(r.income)+cell(r.withdrawal)+cell(r.deposit)+'<td class="'+(r.shortfall>.5?'negative':'')+'">'+num(r.shortfall)+'</td></tr>'}).join('')}
+function render(){const p=read(),normal=AssetLabWithdrawalV2.simulate(p,false),shock=AssetLabWithdrawalV2.simulate(p,true);state={p,normal,shock};selectedYear=Math.min(selectedYear,p.years);const currentIncome=(p.incomeStart===1?p.otherIncome:0)+(p.pensionStart===1?p.pension:0);$('assetsHint').textContent=compact(p.assets);$('incomeHint').textContent='다른 소득 '+p.incomeStart+'~'+p.incomeEnd+'년차 · 연금 '+p.pensionStart+'년차부터. 두 소득은 물가와 무관한 고정 금액입니다.';const end=Math.min(p.years,p.shockStart+p.shockYears-1);$('shockHint').textContent=p.shockStart>p.years?'하락 시작이 계산 기간 밖이므로 기준과 같은 수익률을 적용합니다.':p.shockStart+'~'+end+'년차에는 매년 '+p.shockRate+'%, 나머지 연도에는 '+p.returnRate+'%를 적용합니다.';
+$('summaryDesc').textContent=$('viewMode').value==='real'?'잔액은 오늘 돈 가치로 표시합니다.':'잔액은 해당 시점의 명목금액으로 표시합니다.';$('gap').textContent=compact(Math.max(0,p.expense-currentIncome-p.dividend));const intended=Math.max(0,normal.rows[1].expense-normal.rows[1].income);$('rate').textContent=p.assets?(intended/p.assets*100).toFixed(1)+'%':'—';$('normalLabel').textContent='기준 · '+p.years+'년 뒤';$('shockLabel').textContent='하락 · '+p.years+'년 뒤';$('normal').textContent=compact(amount(normal.rows.at(-1)));$('shock').textContent=compact(amount(shock.rows.at(-1)));$('normalSub').textContent=when(normal.depletion,p.years);$('shockSub').textContent=when(shock.depletion,p.years);$('comparison').textContent='전체 기간 미충당 생활비 합계(명목): 기준 '+won(normal.totalShortfall)+' · 하락 '+won(shock.totalShortfall)+'. '+(p.cutPercent>0?'전년도 손실 후 생활비 '+p.cutPercent+'% 감액 규칙을 두 시나리오에 적용합니다.':'생활비 감액 없이 비교합니다.');ledger();draw()}
+const query=new URLSearchParams(location.search);const initial={...defaults};keys.forEach(k=>{if(query.has(k)&&/^-?\d+(\.\d+)?$/.test(query.get(k)))initial[k]=Number(query.get(k))});write(initial);write(read());if(['real','nominal'].includes(query.get('view'))) $('viewMode').value=query.get('view');
+keys.forEach(k=>{$(k).addEventListener('input',e=>{if(e.isComposing)return;if(moneyKeys.includes(k))formatMoney($(k));render()});$(k).addEventListener('change',()=>{write(read());render()});if(moneyKeys.includes(k))$(k).addEventListener('compositionend',()=>{formatMoney($(k));render()})});
+$('viewMode').addEventListener('change',()=>{$('tooltip').hidden=true;render()});$('tableScenario').addEventListener('change',ledger);$('inspectYear').addEventListener('input',()=>selectYear(Number($('inspectYear').value),false));
+function pointer(e){const box=$('chart').getBoundingClientRect();const x=(e.clientX-box.left)/box.width*600;selectYear((x-70)/510*state.p.years,true)}
+$('chart').addEventListener('pointermove',pointer);$('chart').addEventListener('pointerdown',pointer);$('plot').addEventListener('pointerleave',()=>{$('tooltip').hidden=true});
+document.querySelectorAll('[data-preset]').forEach(btn=>btn.addEventListener('click',()=>{const vals={early:[-25,1,1],long:[-20,1,2],late:[-25,10,1]}[btn.dataset.preset];['shockRate','shockStart','shockYears'].forEach((k,i)=>$(k).value=vals[i]);render()}));
+$('reset').addEventListener('click',()=>{write(defaults);$('viewMode').value='real';$('tableScenario').value='shock';selectedYear=0;$('tooltip').hidden=true;render();$('actionStatus').textContent='기본값으로 초기화했어요.'});
+$('share').addEventListener('click',async()=>{const url=new URL(location.href);url.search='';const p=read();keys.forEach(k=>url.searchParams.set(k,p[k]));url.searchParams.set('view',$('viewMode').value);try{if(navigator.share)await navigator.share({title:'AssetLab 생활비 인출 시뮬레이터',url:url.href});else{await navigator.clipboard.writeText(url.href);$('actionStatus').textContent='조건 링크를 복사했어요.'}}catch(e){if(e.name!=='AbortError')prompt('이 조건 링크를 복사하세요',url.href)}});
+$('csv').addEventListener('click',()=>{const scenario=$('tableScenario').value;const rows=state[scenario].rows;const data=[['연차','수익률(%)','연말자산(원)','오늘가치(원)','전년대비증감(원)','증감률(%)','투자손익(원)','생활비(원)','소득연금(원)','실제자산인출(원)','잉여소득적립(원)','미충당생활비(원)','생활비감액적용'],...rows.map(r=>[r.year,r.year?r.annualReturn:'',Math.round(r.balance),Math.round(r.realBalance),Math.round(r.change),r.changePct===null?'':r.changePct.toFixed(2),Math.round(r.gain),Math.round(r.expense),Math.round(r.income),Math.round(r.withdrawal),Math.round(r.deposit),Math.round(r.shortfall),r.cut?'예':'아니오'])];const blob=new Blob(['\ufeff'+data.map(row=>row.join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='AssetLab-'+(scenario==='shock'?'하락':'기준')+'-연도별자산.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+render();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
